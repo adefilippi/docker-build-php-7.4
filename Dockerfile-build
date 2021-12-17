@@ -1,6 +1,6 @@
 FROM  mcr.microsoft.com/mssql-tools as mssql
 FROM alpine as new-alpine
-FROM php:7.2.34-cli-alpine3.12
+FROM php:7.4.27-cli-alpine3.15
 
 COPY configure.sh /
 COPY conf.d/php.prod.ini /usr/local/etc/php/conf.d/php.ini
