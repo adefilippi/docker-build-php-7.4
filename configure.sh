@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 set -ex
 
-PHP_EXTENSIONS="opcache bcmath bz2 calendar exif gd gettext gmp intl mcrypt recode shmop soap sockets sysvmsg sysvsem sysvshm tidy xsl mysqli pdo_mysql wddx zip pcntl"
-PECL_EXTENSIONS="apcu imagick sqlsrv pdo_sqlsrv"
+PHP_EXTENSIONS="bcmath bz2 calendar ctype curl dba dom enchant exif ffi fileinfo filter ftp gd gettext gmp hash iconv imap intl json ldap mbstring mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline reflection session shmop simplexml snmp soap sockets sodium spl standard sysvmsg sysvsem sysvshm tidy tokenizer xml xmlreader xmlrpc xmlwriter xsl zend_test zip"
+PECL_EXTENSIONS="apcu imagick sqlsrv pdo_sqlsrv mcrypt"
 RUN_DEPS="unzip libzip icu libxslt imagemagick libmcrypt recode tidyhtml freetype libjpeg-turbo libpng libwebp libxpm make"
 BUILD_DEPS="autoconf g++ libzip-dev zlib-dev libpng-dev libxml2-dev icu-dev bzip2-dev libc-dev gmp-dev libmcrypt-dev recode-dev gettext-dev tidyhtml-dev libxslt-dev imagemagick-dev freetype-dev libjpeg-turbo-dev libpng-dev libwebp-dev libxpm-dev tzdata unixodbc-dev"
 
@@ -21,7 +21,7 @@ apk add --no-cache --virtual .build-deps ${BUILD_DEPS}
 
 
 docker-php-source extract
-docker-php-ext-configure gd --with-freetype --with-jpeg
+docker-php-ext-configure gd --with-freetype --with-jpeg --with-png --with-xpm
 docker-php-ext-install -j"$(nproc)" ${PHP_EXTENSIONS}
 pecl install ${PECL_EXTENSIONS}
 docker-php-ext-enable ${PECL_EXTENSIONS}
