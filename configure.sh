@@ -2,7 +2,7 @@
 echo  ${PHPIZE_DEPS}
 set -ex
 
-PHP_EXTENSIONS="opcache bcmath bz2 calendar exif gd gettext gmp json intl mysqli  pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql shmop soap sockets sysvmsg sysvsem sysvshm tidy xsl zip pcntl"
+PHP_EXTENSIONS="opcache bcmath bz2 calendar exif gd gettext gmp json intl mysqli  pdo_mysql pdo_oci pdo_pgsql pdo_sqlite pgsql shmop soap sockets sysvmsg sysvsem sysvshm tidy xsl zip pcntl"
 PECL_EXTENSIONS="apcu imagick sqlsrv pdo_sqlsrv mcrypt"
 RUN_DEPS="unzip libzip icu libxslt imagemagick libmcrypt recode tidyhtml freetype libjpeg-turbo libpng libwebp libxpm make"
 BUILD_DEPS="autoconf g++ libzip-dev zlib-dev libpng-dev libxml2-dev icu-dev bzip2-dev libc-dev gmp-dev libmcrypt-dev recode-dev gettext-dev tidyhtml-dev libxslt-dev imagemagick-dev freetype-dev libjpeg-turbo-dev libpng-dev libwebp-dev libxpm-dev tzdata unixodbc-dev"
