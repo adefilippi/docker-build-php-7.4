@@ -16,7 +16,7 @@ RUN HOME=/ \
     && rm /configure.sh \
     && mkdir $COMPOSER_DIR $SYMFONY_DIR \
     && apk add --no-cache $PHPIZE_DEPS \
-    && pecl install xdebug-3.0.4 \
+    && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && apk del $PHPIZE_DEPS \
     && rm -r /tmp/pear/cache/* /tmp/pear/download/* \
