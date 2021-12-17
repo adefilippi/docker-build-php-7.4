@@ -1,0 +1,36 @@
+FROM  mcr.microsoft.com/mssql-tools as mssql
+FROM alpine as new-alpine
+FROM php:7.2.34-cli-alpine3.12
+
+COPY configure.sh /
+COPY conf.d/php.prod.ini /usr/local/etc/php/conf.d/php.ini
+COPY conf.d/90-xdebug.ini /usr/local/etc/php/conf.d/
+COPY --from=mssql /opt/mssql-tools/ /opt/mssql-tools/
+COPY --from=new-alpine /etc/ssl/cert.pem /etc/ssl/cert.pem
+
+ENV COMPOSER_DIR=/.composer \
+    SYMFONY_DIR=/.symfony
+
+RUN HOME=/ \
+    && /configure.sh \
+    && rm /configure.sh \
+    && mkdir $COMPOSER_DIR $SYMFONY_DIR \
+    && apk add --no-cache $PHPIZE_DEPS \
+    && pecl install xdebug-3.0.4 \
+    && docker-php-ext-enable xdebug \
+    && apk del $PHPIZE_DEPS \
+    && rm -r /tmp/pear/cache/* /tmp/pear/download/* \
+    # Composer
+    && curl --silent --fail-early https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && curl --silent --fail-early https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer1 --version=1.10.17 \
+    # Symfony CLI \
+    && curl -sS https://get.symfony.com/cli/installer | bash && chmod +x /.symfony/bin/symfony && mv /.symfony/bin/symfony /usr/local/bin/symfony \
+    # QA - Globally https://twitter.com/s_bergmann/status/999635212723212288
+    && wget -O phpunit https://phar.phpunit.de/phpunit-9.5.6.phar && chmod +x phpunit && mv phpunit /usr/local/bin/phpunit \
+    && wget -O php-cs-fixer-v3 https://cs.symfony.com/download/php-cs-fixer-v3.phar && chmod +x php-cs-fixer-v3 && mv php-cs-fixer-v3 /usr/local/bin/php-cs-fixer \
+    && wget -O phpstan https://github.com/phpstan/phpstan/releases/download/0.12.91/phpstan.phar && chmod +x phpstan && mv phpstan /usr/local/bin/phpstan \
+    && chmod -R o+rwx $COMPOSER_DIR $SYMFONY_DIR
+
+WORKDIR /app
+
+

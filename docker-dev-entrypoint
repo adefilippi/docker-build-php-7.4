@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ -n "$FPM_UID" ] && [ -n "$FPM_GID" ]; then
+    sed -i "s/www-data:x:82:www-data/www-data:x:$FPM_GID:www-data/g" /etc/group
+    sed -i "s/www-data:x:82:82:Linux User/www-data:x:$FPM_UID:$FPM_GID:Linux User/g" /etc/passwd
+fi
+
+exec docker-php-entrypoint "$@"
+

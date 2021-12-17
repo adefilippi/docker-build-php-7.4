@@ -1,0 +1,21 @@
+###> symfony/framework-bundle ###
+/.idea
+/.env
+/public/bundles/
+/public/elfinder/
+/public/upload/.tmb/*
+/var/
+/vendor/
+/docker-compose.override.yaml
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-pack ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-pack ###
+
+###> behat/symfony2-extension ###
+behat.yaml
+###< behat/symfony2-extension ###
