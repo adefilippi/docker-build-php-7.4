@@ -11,6 +11,8 @@ BUILD_DEPS="autoconf g++ libzip-dev zlib-dev libpng-dev libxml2-dev icu-dev bzip
 apk update
 
 apk add --no-cache fcgi file gettext gnu-libiconv bash postgresql-dev
+apk --no-cache add gnupg
+
 
 # install gnu-libiconv and set LD_PRELOAD env to make iconv work fully on Alpine image.
 # see https://github.com/docker-library/php/issues/240#issuecomment-763112749
@@ -19,6 +21,16 @@ export LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
 apk add --no-cache --virtual rundeps ${RUN_DEPS}
 apk add --no-cache --virtual .build-deps ${BUILD_DEPS}
 apk add unixodbc-dev
+
+curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_17.6.1.1-1_amd64.apk
+curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_17.6.1.1-1_amd64.apk
+
+curl https://packages.microsoft.com/keys/microsoft.asc  | gpg --import -
+gpg --verify msodbcsql17_17.6.1.1-1_amd64.sig msodbcsql17_17.6.1.1-1_amd64.apk
+gpg --verify mssql-tools_17.6.1.1-1_amd64.sig mssql-tools_17.6.1.1-1_amd64.apk
+
+apk add --allow-untrusted msodbcsql17_17.6.1.1-1_amd64.apk
+apk add --allow-untrusted mssql-tools_17.6.1.1-1_amd64.apk
 
 docker-php-source extract
 docker-php-ext-configure gd --with-freetype --with-jpeg
