@@ -18,7 +18,7 @@ export LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
 
 apk add --no-cache --virtual rundeps ${RUN_DEPS}
 apk add --no-cache --virtual .build-deps ${BUILD_DEPS}
-
+apk add unixodbc-dev
 
 docker-php-source extract
 docker-php-ext-configure gd --with-freetype --with-jpeg
