@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env shhttps://github.com/adefilippi/docker-build-php-7.4/actions
 echo  ${PHPIZE_DEPS}
 set -ex
 
