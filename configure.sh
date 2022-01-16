@@ -10,12 +10,11 @@ BUILD_DEPS="autoconf g++ libzip-dev zlib-dev libpng-dev libxml2-dev icu-dev bzip
 
 apk update
 
-apk add --no-cache fcgi file gettext gnu-libiconv bash postgresql-dev
-apk --no-cache add gnupg
-
+apk add --no-cache fcgi file gettext  bash postgresql-dev
 
 # install gnu-libiconv and set LD_PRELOAD env to make iconv work fully on Alpine image.
 # see https://github.com/docker-library/php/issues/240#issuecomment-763112749
+apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community/ gnu-libiconv=1.15-r3
 export LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
 
 apk add --no-cache --virtual rundeps ${RUN_DEPS}
