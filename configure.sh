@@ -40,8 +40,3 @@ apk del .build-deps
 ### create php-session DIR
 mkdir /tmp/php-sessions/
 chmod +rw /tmp/php-sessions/
-
-# install gnu-libiconv and set LD_PRELOAD env to make iconv work fully on Alpine image.
-# see https://github.com/docker-library/php/issues/240#issuecomment-763112749
-apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv gnu-libiconv-dev
-export LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
