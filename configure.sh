@@ -13,17 +13,14 @@ apk update
 apk add --no-cache fcgi file gettext bash postgresql-dev
 
 # Fix iconv extension
-ENV PHP_VER="7.4.27"
-ARG BUILD_PACKAGES="wget build-base php7-dev"
-
-apk add --no-cache --virtual .php-build-dependencies $BUILD_PACKAGES && \
+apk add --no-cache --virtual .php-build-dependencies wget build-base php7-dev && \
 apk add --no-cache --repository https://dl-3.alpinelinux.org/alpine/edge/testing/ gnu-libiconv-dev && \
 (mv /usr/bin/gnu-iconv /usr/bin/iconv; mv /usr/include/gnu-libiconv/*.h /usr/include; rm -rf /usr/include/gnu-libiconv) && \
 mkdir -p /opt && \
 cd /opt && \
-wget https://secure.php.net/distributions/php-$PHP_VER.tar.gz && \
-tar xzf php-$PHP_VER.tar.gz && \
-cd php-$PHP_VER/ext/iconv && \
+wget https://secure.php.net/distributions/php-7.4.27.tar.gz && \
+tar xzf php-7.4.27.tar.gz && \
+cd php-7.4.27/ext/iconv && \
 phpize && \
 ./configure --with-iconv=/usr && \
 make && \
