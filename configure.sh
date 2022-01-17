@@ -12,6 +12,29 @@ apk update
 
 apk add --no-cache fcgi file gettext bash postgresql-dev
 
+# Fix iconv extension
+ENV PHP_VER="7.4.27"
+ARG BUILD_PACKAGES="wget build-base php7-dev"
+
+apk add --no-cache --virtual .php-build-dependencies $BUILD_PACKAGES && \
+apk add --no-cache --repository https://dl-3.alpinelinux.org/alpine/edge/testing/ gnu-libiconv-dev && \
+(mv /usr/bin/gnu-iconv /usr/bin/iconv; mv /usr/include/gnu-libiconv/*.h /usr/include; rm -rf /usr/include/gnu-libiconv) && \
+mkdir -p /opt && \
+cd /opt && \
+wget https://secure.php.net/distributions/php-$PHP_VER.tar.gz && \
+tar xzf php-$PHP_VER.tar.gz && \
+cd php-$PHP_VER/ext/iconv && \
+phpize && \
+./configure --with-iconv=/usr && \
+make && \
+make install && \
+mkdir -p /etc/php7/conf.d && \
+echo "extension=iconv.so" >> /etc/php7/conf.d/iconv.ini && \
+
+apk del .php-build-dependencies && \
+rm -rf /opt/*
+# END Fix iconv extension
+
 apk add --no-cache --virtual rundeps ${RUN_DEPS}
 apk add --no-cache --virtual .build-deps ${BUILD_DEPS}
 apk add unixodbc-dev
@@ -40,3 +63,5 @@ apk del .build-deps
 ### create php-session DIR
 mkdir /tmp/php-sessions/
 chmod +rw /tmp/php-sessions/
+
+
