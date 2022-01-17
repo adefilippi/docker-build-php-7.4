@@ -31,8 +31,6 @@ RUN HOME=/ \
     && wget -O phpstan https://github.com/phpstan/phpstan/releases/download/0.12.91/phpstan.phar && chmod +x phpstan && mv phpstan /usr/local/bin/phpstan \
     && chmod -R o+rwx $COMPOSER_DIR $SYMFONY_DIR
 
-RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv gnu-libiconv-dev
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 
 WORKDIR /app
 

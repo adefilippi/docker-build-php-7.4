@@ -2,7 +2,7 @@
 echo  ${PHPIZE_DEPS}
 set -ex
 
-PHP_EXTENSIONS="opcache bcmath bz2 calendar exif gd gettext gmp json intl mysqli pdo_mysql pdo_pgsql pgsql shmop soap sockets zip"
+PHP_EXTENSIONS="opcache bcmath bz2 calendar exif gd gettext gmp json intl mysqli pdo_mysql pdo_pgsql pgsql shmop soap sockets zip iconv"
 PECL_EXTENSIONS_PACKAGES="apcu imagick sqlsrv pdo_sqlsrv mcrypt"
 PECL_EXTENSIONS="apcu imagick sqlsrv pdo_sqlsrv mcrypt"
 RUN_DEPS="unzip libzip icu libxslt imagemagick libmcrypt recode tidyhtml freetype libjpeg-turbo libpng libwebp libxpm make"
@@ -40,3 +40,5 @@ apk del .build-deps
 ### create php-session DIR
 mkdir /tmp/php-sessions/
 chmod +rw /tmp/php-sessions/
+
+
