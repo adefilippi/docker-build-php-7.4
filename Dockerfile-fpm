@@ -22,8 +22,28 @@ RUN apk add --no-cache $PHPIZE_DEPS \
         && docker-php-ext-enable xdebug \
         && apk del $PHPIZE_DEPS
 
-RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv gnu-libiconv-dev
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
+# Fix iconv extension
+ENV PHP_VER="7.1.5"
+ARG BUILD_PACKAGES="wget build-base php7-dev"
+
+apk add --no-cache --virtual .php-build-dependencies $BUILD_PACKAGES && \
+apk add --no-cache --repository https://dl-3.alpinelinux.org/alpine/edge/testing/ gnu-libiconv-dev && \
+(mv /usr/bin/gnu-iconv /usr/bin/iconv; mv /usr/include/gnu-libiconv/*.h /usr/include; rm -rf /usr/include/gnu-libiconv) && \
+mkdir -p /opt && \
+cd /opt && \
+wget https://secure.php.net/distributions/php-$PHP_VER.tar.gz && \
+tar xzf php-$PHP_VER.tar.gz && \
+cd php-$PHP_VER/ext/iconv && \
+phpize && \
+./configure --with-iconv=/usr && \
+make && \
+make install && \
+mkdir -p /etc/php7/conf.d && \
+echo "extension=iconv.so" >> /etc/php7/conf.d/iconv.ini && \
+
+apk del .php-build-dependencies && \
+rm -rf /opt/*
+# END Fix iconv extension
 
 ENTRYPOINT ["docker-dev-entrypoint"]
 CMD ["php-fpm"]
