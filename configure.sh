@@ -30,22 +30,9 @@ docker-php-ext-install -j"$(nproc)" ${PHP_EXTENSIONS}
 pecl install ${PECL_EXTENSIONS_PACKAGES}
 docker-php-ext-enable ${PECL_EXTENSIONS}
 
-docker-php-source delete
-rm -r /tmp/pear/cache/* /tmp/pear/download/*
-
-### TimeZone
-cp /usr/share/zoneinfo/Europe/Paris /etc/localtime
-echo "Europe/Paris" >  /etc/timezone
-
-apk del .build-deps
-
-### create php-session DIR
-mkdir /tmp/php-sessions/
-chmod +rw /tmp/php-sessions/
-
 
 # Install GNU libiconv
-&& mkdir -p /opt \
+mkdir -p /opt \
 && cd /opt \
 && wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz \
 && tar xzf libiconv-1.15.tar.gz \
@@ -70,3 +57,18 @@ chmod +rw /tmp/php-sessions/
 && rm -rf /opt \
 && rm -rf /var/cache/apk/* \
 && rm -rf /usr/share/*
+
+
+docker-php-source delete
+rm -r /tmp/pear/cache/* /tmp/pear/download/*
+
+### TimeZone
+cp /usr/share/zoneinfo/Europe/Paris /etc/localtime
+echo "Europe/Paris" >  /etc/timezone
+
+apk del .build-deps
+
+### create php-session DIR
+mkdir /tmp/php-sessions/
+chmod +rw /tmp/php-sessions/
+
