@@ -19,6 +19,7 @@ apk add --no-cache --virtual rundeps ${RUN_DEPS}
 apk add --no-cache --virtual .build-deps ${BUILD_DEPS}
 apk add unixodbc-dev
 
+
 curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_17.6.1.1-1_amd64.apk
 curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_17.6.1.1-1_amd64.apk
 
@@ -30,6 +31,9 @@ docker-php-ext-configure gd --with-freetype --with-jpeg
 docker-php-ext-install -j"$(nproc)" ${PHP_EXTENSIONS}
 pecl install ${PECL_EXTENSIONS_PACKAGES}
 docker-php-ext-enable ${PECL_EXTENSIONS}
+
+apk --no-cache add php7-mbstring php7-iconv
+docker-php-ext-install -j"$(nproc)" php7-mbstring php7-iconv
 
 docker-php-source delete
 rm -r /tmp/pear/cache/* /tmp/pear/download/*
