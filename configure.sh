@@ -2,7 +2,7 @@
 echo  ${PHPIZE_DEPS}
 set -ex
 
-PHP_EXTENSIONS="opcache bcmath bz2 calendar exif gd gettext gmp json intl mysqli pdo_mysql pdo_pgsql pgsql shmop soap sockets zip iconv"
+PHP_EXTENSIONS="opcache bcmath bz2 calendar exif gd gettext gmp json intl mysqli pdo_mysql pdo_pgsql pgsql shmop soap sockets zip"
 PECL_EXTENSIONS_PACKAGES="apcu imagick sqlsrv pdo_sqlsrv mcrypt"
 PECL_EXTENSIONS="apcu imagick sqlsrv pdo_sqlsrv mcrypt"
 RUN_DEPS="unzip libzip icu libxslt imagemagick libmcrypt recode tidyhtml freetype libjpeg-turbo libpng libwebp libxpm make"
@@ -12,9 +12,13 @@ apk update
 
 apk add --no-cache fcgi file gettext bash postgresql-dev
 
+apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv-dev
+export LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
+
 apk add --no-cache --virtual rundeps ${RUN_DEPS}
 apk add --no-cache --virtual .build-deps ${BUILD_DEPS}
 apk add unixodbc-dev
+
 
 curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_17.6.1.1-1_amd64.apk
 curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_17.6.1.1-1_amd64.apk
@@ -28,6 +32,9 @@ docker-php-ext-install -j"$(nproc)" ${PHP_EXTENSIONS}
 pecl install ${PECL_EXTENSIONS_PACKAGES}
 docker-php-ext-enable ${PECL_EXTENSIONS}
 
+
+
+
 docker-php-source delete
 rm -r /tmp/pear/cache/* /tmp/pear/download/*
 
@@ -40,5 +47,3 @@ apk del .build-deps
 ### create php-session DIR
 mkdir /tmp/php-sessions/
 chmod +rw /tmp/php-sessions/
-
-
