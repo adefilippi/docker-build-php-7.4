@@ -43,5 +43,3 @@ apk del .build-deps
 ### create php-session DIR
 mkdir /tmp/php-sessions/
 chmod +rw /tmp/php-sessions/
-
-
