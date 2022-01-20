@@ -33,7 +33,8 @@ pecl install ${PECL_EXTENSIONS_PACKAGES}
 docker-php-ext-enable ${PECL_EXTENSIONS}
 
 apk --no-cache add php7-mbstring php7-iconv
-docker-php-ext-install -j"$(nproc)" php7-mbstring php7-iconv
+docker-php-ext-install -j"$(nproc)" mbstring iconv
+
 
 docker-php-source delete
 rm -r /tmp/pear/cache/* /tmp/pear/download/*
