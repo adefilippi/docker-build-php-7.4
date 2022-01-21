@@ -29,10 +29,12 @@ RUN HOME=/ \
     && wget -O phpunit https://phar.phpunit.de/phpunit-9.5.6.phar && chmod +x phpunit && mv phpunit /usr/local/bin/phpunit \
     && wget -O php-cs-fixer-v3 https://cs.symfony.com/download/php-cs-fixer-v3.phar && chmod +x php-cs-fixer-v3 && mv php-cs-fixer-v3 /usr/local/bin/php-cs-fixer \
     && wget -O phpstan https://github.com/phpstan/phpstan/releases/download/0.12.91/phpstan.phar && chmod +x phpstan && mv phpstan /usr/local/bin/phpstan \
-    && chmod -R o+rwx $COMPOSER_DIR $SYMFONY_DIR \
-    && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv gnu-libiconv-dev
+    && chmod -R o+rwx $COMPOSER_DIR $SYMFONY_DIR
 
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+    RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+        && apk update && apk upgrade \
+        && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community/ gnu-libiconv=1.15-r3
+    ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 WORKDIR /app
 
