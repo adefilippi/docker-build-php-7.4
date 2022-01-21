@@ -19,11 +19,13 @@ COPY conf.d/90-xdebug.ini /usr/local/etc/php/conf.d/
 RUN apk add --no-cache $PHPIZE_DEPS \
         && pecl install xdebug \
         && docker-php-ext-enable xdebug \
-        && apk del $PHPIZE_DEPS \
-        && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted gnu-libiconv gnu-libiconv-dev
+        && apk del $PHPIZE_DEPS
 
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
-
+    # Workaround libiconv
+    RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+        && apk update && apk upgrade \
+        && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community/ gnu-libiconv=1.15-r3
+    ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 ENTRYPOINT ["docker-dev-entrypoint"]
 CMD ["php-fpm"]
