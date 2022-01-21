@@ -12,6 +12,10 @@ apk update
 
 apk add --no-cache fcgi file gettext bash postgresql-dev
 
+apk add gnu-libiconv=1.15-r2
+export LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
+
+
 
 apk add --no-cache --virtual rundeps ${RUN_DEPS}
 apk add --no-cache --virtual .build-deps ${BUILD_DEPS}
