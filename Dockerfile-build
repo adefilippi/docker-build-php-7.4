@@ -31,5 +31,11 @@ RUN HOME=/ \
     && wget -O phpstan https://github.com/phpstan/phpstan/releases/download/0.12.91/phpstan.phar && chmod +x phpstan && mv phpstan /usr/local/bin/phpstan \
     && chmod -R o+rwx $COMPOSER_DIR $SYMFONY_DIR
 
+    RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+        && apk update && apk upgrade \
+        && apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community/ gnu-libiconv=1.15-r3
+    ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 
 WORKDIR /app
+
+
