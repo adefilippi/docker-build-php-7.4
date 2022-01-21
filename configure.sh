@@ -10,17 +10,17 @@ BUILD_DEPS="autoconf g++ libzip-dev zlib-dev libpng-dev libxml2-dev icu-dev bzip
 
 apk update
 
-apk add --no-cache fcgi file gettext bash postgresql-dev
+apk add --no-cache fcgi file gettext gnu-libiconv bash postgresql-dev
+apk --no-cache add gnupg
 
-apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community/ --allow-untrusted gnu-libiconv=1.15-r3
+
+# install gnu-libiconv and set LD_PRELOAD env to make iconv work fully on Alpine image.
+# see https://github.com/docker-library/php/issues/240#issuecomment-763112749
 export LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
-
-
 
 apk add --no-cache --virtual rundeps ${RUN_DEPS}
 apk add --no-cache --virtual .build-deps ${BUILD_DEPS}
 apk add unixodbc-dev
-
 
 curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/msodbcsql17_17.6.1.1-1_amd64.apk
 curl -O https://download.microsoft.com/download/e/4/e/e4e67866-dffd-428c-aac7-8d28ddafb39b/mssql-tools_17.6.1.1-1_amd64.apk
@@ -46,4 +46,3 @@ apk del .build-deps
 ### create php-session DIR
 mkdir /tmp/php-sessions/
 chmod +rw /tmp/php-sessions/
-
