@@ -12,7 +12,7 @@ apk update
 
 apk add --no-cache fcgi file gettext bash postgresql-dev
 
-apk add gnu-libiconv=1.15-r2
+apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.12/community/ --allow-untrusted gnu-libiconv=1.15-r2
 export LD_PRELOAD="/usr/lib/preloadable_libiconv.so"
 
 
